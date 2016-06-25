@@ -1,0 +1,89 @@
+#!/bin/bash
+
+if [ "$1" = "--local" ]; then
+    echo "Local dist"
+else
+    if [ -f "~/.emacs.d" ]; then
+        echo "Backing up old ~/.emacs.d as ~/.emacs.d.old"
+        mv ~/.emacs.d ~/.emacs.d.old
+    fi
+
+    echo "\n Cloning ... \n"
+    git clone --recursive https://github.com/d0f/emacs.d.git ~/.emacs.d
+fi
+
+if [ -f "/usr/bin/emacs" ] || [ -f "/usr/local/bin/emacs" ] ; then
+    echo "\n Your emacs installation is valid \n"
+    sleep 0.2
+    echo "Proceding...."
+else
+    echo "\n Adding emacs ppa from cassou \n"
+    sudo add-apt-repository ppa:cassou/emacs -y
+    echo "\n Updating repos \n"
+    sudo apt-get update
+    echo "\n Installing Emacs \n"
+    sudo apt-get install emacs24 emacs24-el emacs24-common-non-dfsg -y
+fi
+
+
+echo "\n Installing Monaco Font \n"
+curl -kL https://raw.github.com/cstrap/monaco-font/master/install-font-ubuntu.sh | bash
+
+echo "\n Installing Consolas Font \n"
+cp -R ~/.emacs.d/.fonts ~/.fonts
+fc-cache -f -v
+
+echo "\n Installing huspell \n"
+sudo apt-get install hunspell hunspell-en-us hunspell-eu-es -y
+
+sudo cp /usr/share/hunspell/en_US.aff /usr/share/hunspell/english.aff
+sudo cp /usr/share/hunspell/en_US.dic /usr/share/hunspell/english.dic
+sudo cp /usr/share/hunspell/eu_ES.aff /usr/share/hunspell/castellano.aff
+sudo cp /usr/share/hunspell/eu_ES.dic /usr/share/hunspell/castellano.dic
+
+
+
+echo "\n Installing Python Pip and Flake 8 \n"
+sudo apt-get install python-pip python-dev -y
+sudo pip install flake8 epc jedi wakatime
+
+echo "\n Starting Emacs in a separate window \n"
+emacs &
+
+echo "\n Setting up Aliases for emacs \n"
+
+if [ "$SHELL" = '/bin/bash' ];
+then
+    echo 'alias ec="emacsclient -n"' >> ~/.bashrc
+    echo 'alias ecn="emacsclient -c"' >> ~/.bashrc
+    echo 'alias ect="emacsclient -t"' >> ~/.bashrc
+elif [ "$SHELL" = '/bin/zsh' ];
+then
+    echo 'alias ec="emacsclient -n"' >> ~/.zshrc
+    echo 'alias ecn="emacsclient -c"' >> ~/.zshrc
+    echo 'alias ect="emacsclient -t"' >> ~/.zshrc
+fi
+
+echo "\n Setting up the ecn for the emacsclient \n"
+
+sudo cp ~/.emacs.d/initial-scripts/ecn /usr/local/bin/ecn
+
+
+echo "#######################################################################"
+echo "     /  /\         /__/\         /  /\         /  /\         /  /\   "
+echo "    /  /:/_       |  |::\       /  /::\       /  /:/        /  /:/_   "
+echo "   /  /:/ /\      |  |:|:\     /  /:/\:\     /  /:/        /  /:/ /\  "
+echo "  /  /:/ /:/_   __|__|:|\:\   /  /:/~/::\   /  /:/  ___   /  /:/ /::\ "
+echo " /__/:/ /:/ /\ /__/::::| \:\ /__/:/ /:/\:\ /__/:/  /  /\ /__/:/ /:/\:\ "
+echo " \  \:\/:/ /:/ \  \:\~~\__\/ \  \:\/:/__\/ \  \:\ /  /:/ \  \:\/:/~/:/ "
+echo "  \  \::/ /:/   \  \:\        \  \::/       \  \:\  /:/   \  \::/ /:/ "
+echo "   \  \:\/:/     \  \:\        \  \:\        \  \:\/:/     \__\/ /:/  "
+echo "    \  \::/       \  \:\        \  \:\        \  \::/        /__/:/   "
+echo "     \__\/         \__\/         \__\/         \__\/         \__\/    "
+echo "#######################################################################"
+echo " "
+echo "Your Emacs is now fetching for the MELPA packages from the internet, if you don't "
+echo " have an internet connection consider talking to your ISP about that."
+echo "Thanks for trying Hacking Emacs Configuration, got to github.com/d0f/emacs.d"
+echo "for details or just see the README.org (obviously with your freshly installed emacs)"
+echo "Just do a M-x find-file RET ~/.emacs.d/README.org RET"

@@ -1,0 +1,94 @@
+#+AUTHOR:	Diego Berrocal
+#+EMAIL:	cestdiego@gmail.com
+#+STARTUP:	content
+#+STARTUP:      indent
+
+* 1. Install
+** Automated install
+Do you trust me?
+#+begin_src sh
+curl -L -O - emacs.hackspace.la | bash
+#+end_src
+
+** Manual Install
+
+If you are not good with ssh:
+#+begin_src sh
+git clone --recursive http://github.com/d0f/.emacs.d
+#+end_src
+
+If you love <3 ssh:
+#+begin_src sh
+git clone --recursive git@github.com:d0f/.emacs.d.git
+#+end_src
+
+Then execute the installer
+#+begin_src sh
+~/.emacs.d/initial-scripts/install-emacs --local
+#+end_src
+
+** Other considerations
+
+*** COMMENT If you want to use `paradox-list-packages` instead of regular `list-packages`
+You must create a GitHub Api key in [[https://github.com/settings/tokens/new][GitHub's settings page]] and add it to init.el
+
+#+begin_src elisp
+(setq paradox-github-token "YOUR TOKEN GOES HERE INSIDE THE QUOTES")
+#+end_src
+
+Or if you are too lazy just delete that line ;)
+* 2. What's this?
+
+The main use of this .emacs.d configuration is to give users of the
+HackSpace community a quick intro to the emacs editor, and also to
+provide a flexible but solid foundation on how to customize what will
+be their own .emacs.d
+
+** Main features:
+- Clojure development support
+- Org Export to Reveal.js for Awesome Presentations
+- =Org2blog= for exporting directly to your wordpress site
+- =Magit= for using git inside emacs
+- (what we think of) Better defaults
+- Latex support with latex-pane-editor for quick editing
+- =Python= IDE implementation with Elpy and Jedi as backend
+- HTML/CSS/JS Support with =web-mode= and =js2=
+- Basic Haskell support (you guys can improve on this)
+- MongoDB Inferior Mode for MongoDB interactions
+- RCIRC for IRC chat with .authinfo.gpg backend
+- Smart Mode Line as the Modeline Frontend (customizable too)
+- TRAMP support out of the box
+- AutoComplete for Ispell and some major languages (pytho,haskell,C, etc)
+
+
+** Careful!
+This has only been testen on Ubuntu 14.04 if you have problems feel
+free to submit an issue/pull request
+* 3. Recommended settings
+
+* 4. Profiles
+* 5. User variables
+
+|----+-------------------------------------+---------------+---------|
+|    | Variable                            | Default value | Select  |
+|----+-------------------------------------+---------------+---------|
+|  1 | org-tree-slide-skip-outline-level   | 0             | Numeric |
+|  2 | org-tree-slide-header               | t             | Boolean |
+|  3 | org-tree-slide-slide-in-effect      | t             | Boolean |
+|  4 | org-tree-slide-slide-in-brank-lines | 10            | Numeric |
+|  5 | org-tree-slide-slide-in-waiting     | 0.02          | Float   |
+|  6 | org-tree-slide-cursor-init          | t             | Boolean |
+|  7 | org-tree-slide-heading-emphasis     | nil           | Boolean |
+|  8 | org-tree-slide-skip-done            | nil           | Boolean |
+|  9 | org-tree-slide-modeline-display     | 'outside      | [*1]    |
+| 10 | org-tree-slide-skip-comments        | t             | Boolean |
+| 11 | org-tree-slide-activate-message     | Hello...      | String  |
+| 12 | org-tree-slide-deactivate-message   | Quit, Bye!    | String  |
+
+
+#+BEGIN_QUOTE
+[*1] { nil| 'lighter | 'outside }
+  'outside: shown in the mode line outside of lighter
+  'lighter: shown in lighter (slow)
+       nil: nothing to be shown"
+#+END_QUOTE
