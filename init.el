@@ -383,7 +383,7 @@
 (require 'sane-defaults)
 
 ;; Setup Key bindings
-(require 'key-bindings)
+;;(require 'key-bindings)
 
 (require 'go-autocomplete)
 (require 'auto-complete-config)
